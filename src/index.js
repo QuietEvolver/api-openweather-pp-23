@@ -24,9 +24,34 @@ function getWeather(city) {
 // UI Logic
 
 function printElements(apiResponse, city) {
-  document.querySelector('#showResponse').innerText = `The humidity in ${city} is ${apiResponse.main.humidity}%. 
-  The temperature in Kelvins is ${apiResponse.main.temp} degrees.`;
+  document.querySelector('#showResponse').innerText = `The humidity in ${city} is ${apiResponse.main.humidity}%.
+  The weather is ${apiResponse.weather[0].main}.
+  The temperature in Kelvins is ${apiResponse.main.temp} degrees.  \n The wind speed is ${apiResponse.wind.speed} mph, due ${windDirection(apiResponse.wind.deg)} \n
+  The temperature is ${tempKelvinToFarenheit(apiResponse.main.temp)} F.`;
 }
+
+function windDirection(deg) {
+  if (315 < deg || deg <= 45) {
+    return "north";
+  } else if (45 < deg && deg <= 135) {
+    return "east";
+  } else if (135 < deg && deg <= 225) {
+    return "south";
+  } else if (225 < deg && deg <= 315){
+    return "west";
+  } else {
+    "there is no wind";
+  }
+}
+
+function tempKelvinToFarenheit(fish){
+  let farenheit = parseFloat(1.8*(fish-273) + 32).toFixed(2);
+  return farenheit;
+}
+
+
+
+
 
 function printError(request, apiResponse, city) {
   document.querySelector('#showResponse').innerText = `There was an error accessing the weather data for ${city}: ${request.status} ${request.statusText}: ${apiResponse.message}`;
